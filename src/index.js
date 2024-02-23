@@ -2,11 +2,10 @@ import express from "express";
 import bcrypt from "bcrypt";
 import cors from "cors";
 
-app.use(cors());
-
 const app = express();
 const port = 3333;
 
+app.use(cors());
 app.use(express.json());
 
 app.listen(port, () => console.log(`Server iniciado: ${port}`));
