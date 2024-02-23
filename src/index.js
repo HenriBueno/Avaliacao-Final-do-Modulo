@@ -1,5 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
+import cors from "cors";
+
 app.use(cors());
 
 const app = express();
