@@ -1,5 +1,6 @@
 import express from "express";
 import bcrypt from "bcrypt";
+app.use(cors());
 
 const app = express();
 const port = 3333;
