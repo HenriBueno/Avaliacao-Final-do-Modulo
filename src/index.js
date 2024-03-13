@@ -68,7 +68,7 @@ app.get("/usuarios", (req, res) => {
 let recados = [];
 let contadorRecado = 1;
 
-app.post("/criarRecados/:email", (req, res) => {
+app.post("/criarRecados", (req, res) => {
   const mensagem = {
     id: contadorRecado,
     titulo: req.body.titulo,
@@ -81,9 +81,7 @@ app.post("/criarRecados/:email", (req, res) => {
   contadorRecado++;
 });
 
-app.get("/verRecados/:email", (req, res) => {
-  res.status(200).json(recados);
-});
+
 
 app.put("/atualizarRecados/:email/:id", (req, res) => {
   const id = parseInt(req.params.id);
@@ -117,3 +115,37 @@ app.delete("/deletarRecados/:email/:id", (req, res) => {
 
   res.status(200).send("Recado deletado com sucesso!");
 });
+
+/*app.get("/verRecados/:email", (req, res) => {
+  res.status(200).json(recados);
+});*/
+
+app.get("/verRecados", (req, res) => {
+
+try {
+  if(recados.length===0){
+    return res.status(400).send({message:'A lista está vazia'})
+  }
+  const limite = parseInt(req.query.limite)
+  const offset = parseInt(req.query.offset)
+
+  const itensPorPaginaPositivo = offset -1;
+
+  const recadosPaginados = recados.slice(
+    itensPorPaginaPositivo,
+    itensPorPaginaPositivo + limite
+  )
+    res.status(200).json({
+      success: true,
+      message: 'Recados retornados com sucesso',
+      data: recadosPaginados,
+      totalProdutos: recados.length,
+      paginaAtual: Math.floor(itensPorPaginaPositivo / limite) + 1,
+      totalPaginas: Math.ceil(recados.length / limite),
+      quantidadePorPagina: limite,
+    })
+  }catch(error){
+    return res.status(500).send({ message: 'Erro interno'})
+  }
+
+})
